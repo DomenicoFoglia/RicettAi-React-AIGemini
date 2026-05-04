@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import IngredientList from "./IngredientsList";
 import DomeRecipe from "./DomeRecipe";
-import { getRecipeFromMistral } from "../ai";
+import { getRecipeFromGemini } from "../ai";
 
 function Main() {
     const [ingredients, setIngredient] = useState([]);
@@ -12,7 +12,6 @@ function Main() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const recipeSection = useRef(null);
-    
 
     function addIngredient(event) {
         event.preventDefault();
@@ -36,7 +35,7 @@ function Main() {
         setRecipeShown(true);
 
         try {
-            const result = await getRecipeFromMistral(ingredients);
+            const result = await getRecipeFromGemini(ingredients);
             console.log("Ricetta ricevuta:", result);
             setRecipeAi(result);
         } catch (err) {
@@ -57,7 +56,6 @@ function Main() {
                 toggleAndGenerateRecipe={toggleAndGenerateRecipe}
                 removeIngredient={removeIngredient}
                 ref={recipeSection}
-
             />
         );
     }
@@ -75,7 +73,7 @@ function Main() {
                     Aggiungi <span className="text-primary">ALMENO 4 ingredienti</span>
                 </p>
             </div>
-            
+
             <form
                 onSubmit={addIngredient}
                 className="d-flex justify-content-center gap-3 mb-4"
@@ -108,7 +106,7 @@ function Main() {
             {loading && (
                 <div className="d-flex justify-content-center mt-4">
                     <div className="spinner-border text-primary" role="status" aria-label="Caricamento in corso">
-                    <span className="visually-hidden">Caricamento in corso...</span>
+                        <span className="visually-hidden">Caricamento in corso...</span>
                     </div>
                 </div>
             )}
